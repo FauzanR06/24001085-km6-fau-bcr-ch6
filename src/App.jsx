@@ -1,35 +1,88 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+
+import Navbar from "./components/navbar";
+import Home from "./pages/home";
+import Login from "./pages/login";
+import Register from "./pages/register";
+
+import "bootstrap/dist/css/bootstrap.min.css"; // apply bootstrap for styling
+import "react-toastify/dist/ReactToastify.css";
+import Profile from "./pages/profile";
+import Protected from "./components/Protected";
+import NonProtected from "./components/NonProtected";
+import CarDetail from "./pages/car/details";
+
+import store from "./redux/store";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Protected>
+        <Navbar />
+        <Container className="mt-5">
+          <Home />
+        </Container>
+      </Protected>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <NonProtected>
+        <Navbar />
+        <Container className="mt-5">
+          <Login />
+        </Container>
+      </NonProtected>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <NonProtected>
+        <Navbar />
+        <Container className="mt-5">
+          <Register />
+        </Container>
+      </NonProtected>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <Protected roles={["admin"]}>
+        <Navbar />
+        <Container className="mt-5">
+          <Profile />
+        </Container>
+      </Protected>
+    ),
+  },
+  {
+    path: "/cars/:id",
+    element: (
+      <Protected>
+        <Navbar />
+        <Container className="mt-5">
+          <CarDetail />
+        </Container>
+      </Protected>
+    ),
+  },
+]);
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Provider store={store}>
+      <RouterProvider router={router} />
+
+      <ToastContainer theme="colored" />
+    </Provider>
+  );
 }
 
-export default App
+export default App;
