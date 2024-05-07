@@ -100,6 +100,8 @@ export const editCar =
     const state = getState();
     const { token } = state.auth;
 
+    setIsLoading(true);
+
     let data = new FormData();
     data.append("name", name);
     data.append("cartype_id", cartype_id);
@@ -129,6 +131,7 @@ export const editCar =
       toast.error(error?.response?.data?.message);
       navigate("/");
     }
+    setIsLoading(false);
   };
 
 export const deleteCar = (id) => async (dispatch, getState) => {

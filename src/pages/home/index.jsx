@@ -23,7 +23,7 @@ const Home = () => {
             <Button
               variant="outline-success"
               as={Link}
-              to={""}
+              to={"/cars/add"}
               className="w-100 mb-3"
             >
               Add Car
